@@ -3,149 +3,768 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>GitHub Collaboration</title>
 
     <style>
+
+        /* =========================
+           RESET
+        ========================= */
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
+
+        /* =========================
+           BODY
+        ========================= */
+
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
+            font-family: Arial, Helvetica, sans-serif;
+
             min-height: 100vh;
+
+            color: white;
 
             display: flex;
             justify-content: center;
             align-items: center;
+
+            padding: 60px 20px;
+
+            overflow-x: hidden;
+
+            background:
+                radial-gradient(
+                    circle at 15% 20%,
+                    rgba(99, 102, 241, 0.25),
+                    transparent 30%
+                ),
+
+                radial-gradient(
+                    circle at 85% 80%,
+                    rgba(14, 165, 233, 0.20),
+                    transparent 30%
+                ),
+
+                linear-gradient(
+                    135deg,
+                    #070b16,
+                    #0d1224,
+                    #080b14
+                );
         }
+
+
+        /* =========================
+           BACKGROUND DECORATION
+        ========================= */
+
+        body::before {
+            content: "";
+
+            position: fixed;
+
+            width: 300px;
+            height: 300px;
+
+            border-radius: 50%;
+
+            background: rgba(99, 102, 241, 0.12);
+
+            filter: blur(80px);
+
+            top: -100px;
+            left: -100px;
+
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "";
+
+            position: fixed;
+
+            width: 300px;
+            height: 300px;
+
+            border-radius: 50%;
+
+            background: rgba(14, 165, 233, 0.10);
+
+            filter: blur(80px);
+
+            bottom: -100px;
+            right: -100px;
+
+            pointer-events: none;
+        }
+
+
+        /* =========================
+           CONTAINER
+        ========================= */
 
         .container {
-            width: 90%;
-            max-width: 1000px;
+            width: 100%;
+            max-width: 1050px;
+
             text-align: center;
+
+            position: relative;
+            z-index: 2;
         }
+
+
+        /* =========================
+           BADGE
+        ========================= */
+
+        .badge {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 8px 17px;
+
+            border-radius: 50px;
+
+            background: rgba(255, 255, 255, 0.06);
+
+            border: 1px solid rgba(255, 255, 255, 0.12);
+
+            backdrop-filter: blur(15px);
+
+            color: #aeb8ff;
+
+            font-size: 14px;
+
+            margin-bottom: 22px;
+
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+
+
+        /* =========================
+           TITLE
+        ========================= */
 
         h1 {
-            font-size: 40px;
-            color: #222;
-            margin-bottom: 10px;
+            font-size: 52px;
+
+            font-weight: 800;
+
+            letter-spacing: -1.5px;
+
+            margin-bottom: 15px;
+
+            background:
+                linear-gradient(
+                    90deg,
+                    #ffffff,
+                    #b7b9ff,
+                    #70dcff
+                );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
+
 
         .subtitle {
-            color: #666;
-            margin-bottom: 40px;
+            color: #98a2b3;
+
+            font-size: 18px;
+
+            margin-bottom: 55px;
         }
 
+
+        /* =========================
+           CARDS
+        ========================= */
+
         .cards {
-            display: flex;
-            justify-content: center;
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
             gap: 30px;
         }
 
+
+        /* =========================
+           CARD
+        ========================= */
+
         .card {
-            width: 350px;
-            background: white;
-            padding: 35px 30px;
-            border-radius: 15px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+
+            padding: 42px 35px;
+
+            border-radius: 28px;
+
+            overflow: hidden;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.09),
+                    rgba(255,255,255,0.035)
+                );
+
+            border: 1px solid rgba(255,255,255,0.12);
+
+            backdrop-filter: blur(20px);
+
+            box-shadow:
+                0 25px 60px rgba(0,0,0,0.35),
+                inset 0 1px 0 rgba(255,255,255,0.08);
+
+            transition:
+                transform 0.4s ease,
+                box-shadow 0.4s ease,
+                border-color 0.4s ease;
+
+            animation: appear 0.8s ease forwards;
+        }
+
+
+        /* CARD HOVER */
+
+        .card:hover {
+            transform: translateY(-12px);
+
+            border-color: rgba(129, 140, 248, 0.45);
+
+            box-shadow:
+                0 35px 80px rgba(0,0,0,0.5),
+                0 0 40px rgba(99,102,241,0.12);
+        }
+
+
+        /* CARD LIGHT */
+
+        .card::before {
+            content: "";
+
+            position: absolute;
+
+            width: 180px;
+            height: 180px;
+
+            border-radius: 50%;
+
+            background: #6366f1;
+
+            filter: blur(90px);
+
+            opacity: 0;
+
+            top: -90px;
+            right: -90px;
+
+            transition: 0.5s;
+        }
+
+
+        .card:hover::before {
+            opacity: 0.25;
+        }
+
+
+        /* =========================
+           NAME
+        ========================= */
+
+        .name {
+            display: inline-block;
+
+            padding: 8px 20px;
+
+            border-radius: 50px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            letter-spacing: 0.5px;
+
+            margin-bottom: 25px;
+
+            position: relative;
+            z-index: 2;
+        }
+
+
+        .royan {
+            color: #b9c1ff;
+
+            background:
+                rgba(99,102,241,0.15);
+
+            border:
+                1px solid rgba(129,140,248,0.3);
+
+            box-shadow:
+                0 0 20px rgba(99,102,241,0.12);
+        }
+
+
+        .akbar {
+            color: #ffb4e5;
+
+            background:
+                rgba(236,72,153,0.13);
+
+            border:
+                1px solid rgba(236,72,153,0.3);
+
+            box-shadow:
+                0 0 20px rgba(236,72,153,0.10);
+        }
+
+
+        /* =========================
+           ICON
+        ========================= */
+
+        .icon {
+            width: 90px;
+            height: 90px;
+
+            margin: 0 auto 25px;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 25px;
+
+            font-size: 48px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,255,255,0.13),
+                    rgba(255,255,255,0.04)
+                );
+
+            border:
+                1px solid rgba(255,255,255,0.13);
+
+            box-shadow:
+                0 15px 30px rgba(0,0,0,0.25),
+                inset 0 1px 0 rgba(255,255,255,0.12);
+
+            transition: 0.4s;
+        }
+
+
+        .card:hover .icon {
+            transform:
+                translateY(-5px)
+                scale(1.05);
+
+            box-shadow:
+                0 20px 40px rgba(0,0,0,0.35),
+                0 0 30px rgba(99,102,241,0.15);
+        }
+
+
+        /* =========================
+           CARD TITLE
+        ========================= */
+
+        .card h2 {
+            font-size: 27px;
+
+            margin-bottom: 16px;
+
+            color: #ffffff;
+
+            letter-spacing: -0.5px;
+        }
+
+
+        /* =========================
+           DESCRIPTION
+        ========================= */
+
+        .card p {
+            color: #9da7b8;
+
+            font-size: 16px;
+
+            line-height: 1.8;
+
+            max-width: 390px;
+
+            margin: 0 auto 30px;
+        }
+
+
+        /* =========================
+           BUTTON
+        ========================= */
+
+        .button {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 13px 23px;
+
+            border-radius: 12px;
+
+            text-decoration: none;
+
+            color: white;
+
+            font-size: 14px;
+
+            font-weight: bold;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #6366f1,
+                    #4f46e5
+                );
+
+            border:
+                1px solid rgba(255,255,255,0.15);
+
+            box-shadow:
+                0 10px 25px rgba(79,70,229,0.25);
+
             transition: 0.3s;
         }
 
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+
+        .button:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 15px 35px rgba(79,70,229,0.4);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #818cf8,
+                    #6366f1
+                );
         }
 
-        .icon {
-            font-size: 50px;
-            margin-bottom: 20px;
-        }
-
-        .card h2 {
-            color: #222;
-            margin-bottom: 15px;
-        }
-
-        .card p {
-            color: #666;
-            line-height: 1.7;
-            margin-bottom: 25px;
-        }
-
-        button {
+        /* Tombol Spesial Akbar */
+        .btn-akbar {
+            background: linear-gradient(135deg, #ec4899, #be185d);
             border: none;
-            background: #24292f;
-            color: white;
-            padding: 12px 25px;
-            border-radius: 8px;
             cursor: pointer;
-            font-size: 15px;
+            font-family: inherit;
+        }
+        .btn-akbar:hover {
+            background: linear-gradient(135deg, #f472b6, #ec4899);
+            box-shadow: 0 15px 35px rgba(236,72,153,0.4);
         }
 
-        button:hover {
-            background: #000;
+        /* =========================
+           MODAL (DALEMAN AKBAR)
+        ========================= */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 999; opacity: 0; pointer-events: none; transition: 0.4s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1; pointer-events: all;
+        }
+        .modal-content {
+            background: linear-gradient(145deg, rgba(236,72,153,0.08), rgba(13,18,36,0.95));
+            border: 1px solid rgba(236,72,153,0.3); border-radius: 28px;
+            padding: 40px; width: 90%; max-width: 420px; text-align: center;
+            transform: translateY(30px) scale(0.95); transition: 0.4s ease;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), 0 0 40px rgba(236,72,153,0.15);
+            position: relative;
+        }
+        .modal-overlay.active .modal-content {
+            transform: translateY(0) scale(1);
+        }
+        .close-btn {
+            position: absolute; top: 15px; right: 20px; background: none; border: none;
+            color: #9da7b8; font-size: 28px; cursor: pointer; transition: 0.3s;
+        }
+        .close-btn:hover { color: white; }
+        .guest-input {
+            width: 100%; padding: 14px 18px; border-radius: 12px;
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: white; font-size: 15px; margin-bottom: 20px; outline: none; transition: 0.3s;
+        }
+        .guest-input:focus {
+            border-color: #ec4899; background: rgba(255,255,255,0.08);
         }
 
-        @media (max-width: 768px) {
+        /* =========================
+           FOOTER
+        ========================= */
+
+        .footer {
+            margin-top: 40px;
+
+            color: #667085;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           ANIMATION
+        ========================= */
+
+        @keyframes appear {
+
+            from {
+                opacity: 0;
+
+                transform:
+                    translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+
+                transform:
+                    translateY(0);
+            }
+        }
+
+
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            h1 {
+                font-size: 40px;
+            }
+
             .cards {
-                flex-direction: column;
-                align-items: center;
+                grid-template-columns: 1fr;
             }
 
             .card {
+                max-width: 500px;
+
                 width: 100%;
-                max-width: 350px;
+
+                margin: auto;
+            }
+        }
+
+
+        @media (max-width: 500px) {
+
+            body {
+                padding: 45px 18px;
             }
 
             h1 {
-                font-size: 30px;
+                font-size: 32px;
+            }
+
+            .subtitle {
+                font-size: 15px;
+
+                margin-bottom: 35px;
+            }
+
+            .card {
+                padding: 32px 22px;
+            }
+
+            .card h2 {
+                font-size: 24px;
             }
         }
+
     </style>
 </head>
+
 
 <body>
 
     <div class="container">
 
-        <h1>GitHub Collaboration</h1>
-        <p class="subtitle">Praktik Kolaborasi dengan HTML & CSS</p>
+        <!-- HEADER -->
+
+        <div class="badge">
+            ✦ GitHub Collaboration Project
+        </div>
+
+
+        <h1>
+            Build. Collaborate. Create.
+        </h1>
+
+
+        <p class="subtitle">
+            Praktik kolaborasi menggunakan HTML, CSS, dan GitHub
+        </p>
+
+
+        <!-- CARDS -->
 
         <div class="cards">
 
-            <div class="card">
-                <div class="icon">💻</div>
 
-                <h2>HTML & CSS</h2>
+            <!-- ROYAN -->
+
+            <div class="card">
+
+                <div class="name royan">
+                    royan
+                </div>
+
+
+                <div class="icon">
+                    💻
+                </div>
+
+
+                <h2>
+                    HTML & CSS
+                </h2>
+
 
                 <p>
-                    Membuat tampilan website sederhana menggunakan
-                    HTML untuk struktur dan CSS untuk mempercantik tampilan.
+                    Membuat tampilan website modern menggunakan
+                    HTML untuk struktur dan CSS untuk menciptakan
+                    desain yang menarik dan responsif.
                 </p>
 
-                <button>Learn More</button>
+
+                <a href="#" class="button">
+                    Learn More →
+                </a>
+
             </div>
 
 
-            <div class="card">
-                <div class="icon">🚀</div>
 
-                <h2>GitHub Collaboration</h2>
+            <!-- AKBAR -->
+
+            <div class="card">
+
+                <div class="name akbar">
+                    akbar
+                </div>
+
+
+                <div class="icon">
+                    🚀
+                </div>
+
+
+                <h2>
+                    GitHub Collaboration
+                </h2>
+
 
                 <p>
-                    Berlatih bekerja sama dalam satu project menggunakan
-                    GitHub, branch, commit, dan pull request.
+                    Berlatih bekerja sama dalam satu project
+                    menggunakan GitHub, branch, commit,
+                    push, pull request, dan merge.
                 </p>
 
-                <button>Get Started</button>
+                <!-- Tombol diganti menjadi trigger ke modal daleman -->
+                <button class="button btn-akbar" onclick="openAkbarModal()">
+                    Masuk Ruang Akbar →
+                </button>
+
             </div>
+
 
         </div>
 
+
+        <div class="footer">
+            © 2026 GitHub Collaboration • HTML & CSS Practice
+        </div>
+        
+
     </div>
+
+    <!-- =========================
+         MODAL / DALEMAN AKBAR
+    ========================= -->
+    <div class="modal-overlay" id="akbarModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeAkbarModal()">×</button>
+            
+            <div class="icon" style="width: 70px; height: 70px; font-size: 32px; margin: 0 auto 15px;">🚀</div>
+            <h3 style="color: #ffb4e5; font-size: 24px; margin-bottom: 10px; letter-spacing: -0.5px;">Ruang Kolaborasi Akbar</h3>
+            <p style="color: #9da7b8; font-size: 15px; margin-bottom: 25px; line-height: 1.6;">Silakan isi daftar tamu terlebih dahulu untuk mengakses fitur di dalam ruangan ini.</p>
+            
+            <!-- Form Input -->
+            <div id="guestForm">
+                <input type="text" id="guestName" class="guest-input" placeholder="Masukkan nama kamu..." autocomplete="off">
+                <button class="button btn-akbar" onclick="loginGuest()" style="width: 100%; justify-content: center;">
+                    Masuk Sekarang
+                </button>
+            </div>
+
+            <!-- Pesan Sukses -->
+            <div id="guestWelcome" style="display: none;">
+                <h4 style="color: white; font-size: 20px; margin-bottom: 10px;">
+                    Selamat Datang, <span id="displayName" style="color: #ffb4e5;"></span>! 🎉
+                </h4>
+                <p style="color: #9da7b8; font-size: 15px; margin-bottom: 0;">Akses berhasil diberikan. Kamu sekarang berada di dalam ruang kolaborasi Akbar.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- =========================
+         SCRIPT JAVASCRIPT
+    ========================= -->
+    <script>
+        function openAkbarModal() {
+            document.getElementById('akbarModal').classList.add('active');
+        }
+
+        function closeAkbarModal() {
+            document.getElementById('akbarModal').classList.remove('active');
+            // Opsional: Reset form saat ditutup
+            setTimeout(() => {
+                document.getElementById('guestForm').style.display = 'block';
+                document.getElementById('guestWelcome').style.display = 'none';
+                document.getElementById('guestName').value = '';
+            }, 400);
+        }
+
+        function loginGuest() {
+            const name = document.getElementById('guestName').value.trim();
+            if(name !== "") {
+                document.getElementById('guestForm').style.display = 'none';
+                document.getElementById('guestWelcome').style.display = 'block';
+                document.getElementById('displayName').textContent = name;
+            } else {
+                alert("Silakan masukkan nama kamu terlebih dahulu!");
+                document.getElementById('guestName').focus();
+            }
+        }
+    </script>
 
 </body>
 </html>
